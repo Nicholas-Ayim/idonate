@@ -1,0 +1,14 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.md-custom-hover{
+    transition:all .3s ease;
+    background:pink;
+
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
