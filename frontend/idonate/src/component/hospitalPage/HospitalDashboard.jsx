@@ -11,7 +11,7 @@ export default function HospitalDashboard() {
     console.log(params.page)
   return (
   <>
-  <div className='h-[100%] w-[100%] bg-[#000] flex justify-center items-center
+  <div className='h-[100%] w-[100%] flex md:flex-col 
   '>
     {/* hospital page {params.page} */}
     {params.page == "Donor Register" ? <DonorRegister/>:  params.page == "Donor Verification" ? <DonorVerification/>  : params.page == "Donor History" ? <DonorHistory/> : params.page == "Hospital Profile" ? <HospitalProfile/> : "Logout"

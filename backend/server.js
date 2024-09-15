@@ -9,6 +9,9 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+app.use(cors())
+app.use(bodyParser.json());
+
 //proceed with cors config
 app.use(cors({
     origin:"http://localhost:5173",
@@ -17,7 +20,7 @@ app.use(cors({
 }))
 
 
-app.use(bodyParser.json());
+
 
 
 //router middleware
@@ -36,6 +39,11 @@ app.use("/hospital",HospitalRouter)
 //register donor, login donor routes
 const DonorRouter = require("./routers/donorRouter/donorRouter")
 app.use("/donor/register",DonorRouter)
+
+//#################################
+//router for verifyDonators
+const VerifyRouter = require("./routers/verifyRouter/verifyRouter")
+app.use("/verify",VerifyRouter)
 
 
 //#################################
