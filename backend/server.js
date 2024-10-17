@@ -12,12 +12,27 @@ app.use(express.urlencoded({extended:true}))
 app.use(cors())
 app.use(bodyParser.json());
 
-//proceed with cors config
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://usavealife.vercel.app"
+];
+
 app.use(cors({
-    origin:"http://localhost:5173",
-    methods:["GET","POST"],
-    credentials:true
-}))
+  origin: function(origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+          // Allow the request
+          callback(null, true);
+      } else {
+          // Reject the request
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
+  methods: ["GET", "POST"],
+  credentials: true
+}));
+
+
 
 
 

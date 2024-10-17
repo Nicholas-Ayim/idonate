@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import DonorReducer from "./features/donorSlice";
+import HospitalReducer from "../feature/hospitalSlice";
 
 import { combineReducers } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
@@ -15,6 +16,8 @@ import paginatedApi from "../services/paginated";
 import searchApi from "../services/searchApi";
 
 const reducer = combineReducers({
+    hospitalLogin: HospitalReducer,
+
 //   donors: DonorReducer,
   [donorApi.reducerPath]: donorApi.reducer,
   [paginatedApi.reducerPath]: paginatedApi.reducer,

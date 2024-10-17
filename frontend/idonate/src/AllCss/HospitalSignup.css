@@ -1,0 +1,147 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.signup-donor-container{
+    display: flex;
+    align-items: left;
+    justify-content: space-between;
+    flex-direction: column;
+    gap:10px
+}
+.signup-donor-container .name-label{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    padding-top: .5rem;
+    padding-bottom: 0rem;
+}
+.h-label{
+    font-size: 17px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+    color: rgba(0, 58, 128, 0.612);
+}
+.input-fields{
+    border: none;
+    border: 1px solid inherit;
+    border-bottom:2px solid rgba(99, 99, 99, .1) ;
+    accent-color: rgba(255, 21, 0, 0.99);
+    background: none;
+    width:100%;
+    padding: .3rem;
+    border-radius: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    font-weight: 500;
+}
+.signup-container{
+    display: flex;
+    width:100%;
+    justify-content: center;
+    padding: .2rem 0rem;
+
+}
+.signup-btn{
+    padding: .5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.signup-btn:hover{
+    transition: all .3s ease;
+    background-color: green;
+}
+.age-blood-type{
+    display: flex;
+    gap:10px;
+}
+.region-selected,.blood-group-selected{
+    padding: .3rem;
+    text-align: center;
+}
+.error-warning,.success-warning{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    width:100%;
+    align-items: center;
+    color:red;
+    border:1px solid grey;
+    border-radius: 10px;
+    font-size: 15px;
+    padding: .5rem 1rem;
+    line-height: 1.2;
+}
+.success-warning{
+    color:green;
+}
+.loader{
+  margin: auto ;
+  margin-top: 1rem;
+  font-size: 12px;
+  padding-top: .5rem;
+}
+.add-contacts-container{
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+.add-contact{
+    border: none;
+    background: none;
+    color:#0000ff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+}
+.add-contact:hover{
+    transition: all .3s ease;
+    color:green;
+}
+
+.postal-code-container{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+}
+.street-code-select{
+    width: 70px;
+    margin: auto;
+    text-align: center;
+    padding: .2rem;
+}
+.street-number{
+    width:90px;
+    border: none;
+        padding: .2rem;
+        border-radius: 5px;
+        padding: .2rem .5rem;
+
+}
+.landmarks::placeholder{
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(6, 128, 0, 0.945);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.new-contacts-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+.delete-contact{
+    height:fit-content;
+    border: none;
+    background: none;
+    color: #FF0000;
+    cursor: pointer;
+}
+.delete-contact:hover{
+    transition: all .2s ease;
+    color:#FF0000
+}

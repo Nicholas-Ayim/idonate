@@ -12,6 +12,8 @@ import store from "./store/store.jsx";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import HospitalLogins from './component/HospitalLogin/HospitalLogin.jsx'
+import SignupHospital from './component/HospitalSignup/HospitalSignup.jsx'
 
 const persistor = persistStore(store);
 
@@ -19,7 +21,12 @@ const persistor = persistStore(store);
 const router = createBrowserRouter([
   {
     path:"/",
-    element:<App/>,
+    element:<SignupHospital/>,
+    errorElement:<div>Not Found</div>
+  },
+  {
+    path:"/hospital/login",
+    element:<HospitalLogins/>,
     errorElement:<div>Not Found</div>
   },
   {

@@ -1,0 +1,154 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.login-separator{
+    height: 30vh;
+    background: rgba(0, 100, 7, 0.801);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    margin: 0rem .2rem;
+}
+.login-greetings{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    bottom: 1rem;
+    padding: 0rem 1rem;
+    gap:30px;
+    width: 100%;
+}
+.login-header,.no-login-header{
+    width: fit-content;
+    font-size: 22px;
+    text-align: center;
+    background-color: #0078d7;
+    border-radius: 5px;
+    padding: .2rem .5rem;
+    color: #fff;
+}
+.no-login-header{
+    color:#fff;
+}
+
+.login-now{
+    padding: .5rem 2rem;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 100, 27, 0.842);
+        background-color: #e4302f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+.login-now:hover{
+    transition: all .3s ease;
+    background-color: rgba(0, 100, 27, 0.842);
+    cursor: pointer;
+}
+.login-img-bg{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem 0rem;
+}
+.login-img{
+    height: 60vh;
+    width: 100%;
+    object-fit: fill;
+        border-radius: 10px;
+
+}
+
+.login-container{
+    display: flex;
+    width:100%;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 3rem .5rem;
+    margin: 0rem 5rem;
+    border: 2px solid #e4302f;
+    height: fit-content;
+    accent-color: #e4302f;
+}
+.hospital-login{
+        background-color: #eee;
+        border: 2px solid #0078d7;
+            accent-color: #0078d7;
+
+
+}
+.login-form, .fields-container{
+     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-direction: column;
+    gap:25px
+    
+}
+.email-field,.password-field{
+    height: 40px;
+    width:200px;
+    border-radius: 5px;
+    padding: .3rem;
+}
+.login-btn{
+    padding: .5rem;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: rgba(0, 100, 7, 0.801);
+    transition: all .3s ease;
+    color: white;
+}
+.hospital-donor-login{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    padding-top: 1rem;
+    justify-content: center;
+}
+.dl-link-container{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+.line1{
+    position: absolute;
+    top:5px;
+    left:-65px;
+    border: 3px solid #eee;
+    border-right: none;
+    width: 65px;
+    height: 150px;
+    color: black;
+}
+.line2{
+    position: absolute;
+    top:5px;
+    right:-160px;
+    border: 3px solid #eee;
+    border-left: none;
+    width: 140px;
+    height: 450px;
+    color: black;
+}
+.circular{
+    height:15px;
+    width:15px;
+    border-radius: 100%;
+}
+.circle1{
+    background-color: #e4302f;
+}
+.circle2{
+    background-color: #0078d7;
+}
+.linker-container{
+    position: relative;
+    right: 50px;
+    display: flex;
+    margin: auto;
+    gap:30px;
+}

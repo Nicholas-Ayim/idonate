@@ -2,15 +2,20 @@ import { useEffect, useState } from "react";
 import { FaHospital, FaFirstAid } from "react-icons/fa";
 import baseApi from "../../axios/baseApi";
 import ProcessImage from "./ProcessImage";
+import { selectHospitalLogin } from "../../feature/hospitalSlice";
+import { useSelector } from "react-redux";
 
 export default function DonorRegister() {
-  const [hospitalName, setHospitalName] = useState("");
+  // get the hospital name and pass to the donation registration
+  const {HospitalName} = useSelector(selectHospitalLogin)
+
+  console.log("hospital-name",HospitalName)
   const [donorname, setDonorName] = useState("");
   const [dob, setDob] = useState("");
   const [bloodtype, setBloodType] = useState("");
   const [picture, setPicture] = useState(null); // Store image file
   const [imageUrl, setImageUrl] = useState(""); // For storing the uploaded Cloudinary URL
-  const [descriptors,setDescriptors] = useState([])
+  const [descriptors, setDescriptors] = useState([]);
   const [uploaded, setUploaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,36 +24,35 @@ export default function DonorRegister() {
   useEffect(() => {
     console.log("dob", dob);
     console.log("bloodtype", bloodtype);
-        //awaited descriptor
-    console.log("descriptor",descriptors)
-  }, [dob, bloodtype,descriptors]);
+    console.log("descriptor", descriptors);
+  }, [dob, bloodtype, descriptors]);
 
   const stats = [
     {
       name: "New Patients",
-      number: 178,
+      number: 2,
       icon: <FaHospital />,
     },
     {
       name: "Blood Donations",
-      number: 178,
+      number: 5,
       icon: <FaFirstAid />,
     },
     {
       name: "Register Donors",
-      number: 178,
+      number: 3,
       icon: <FaHospital />,
     },
     {
       name: "New Patients",
-      number: 178,
+      number: 1,
       icon: <FaHospital />,
     },
   ];
 
   const uploadImage = async (file) => {
     const cloudinaryUrl =
-      "https://api.cloudinary.com/v1_1/nayy-1999/image/upload";
+      "https://api.cloudinary.com/v1_1/<cloudinary_name>/image/upload";
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "bloodImage"); // Replace with your actual Cloudinary preset
@@ -70,7 +74,7 @@ export default function DonorRegister() {
     }
   };
 
-  const handleChangePic = async(e) => {
+  const handleChangePic = async (e) => {
     const file = e.target.files[0];
     if (!file) {
       return alert("No file selected");
@@ -96,46 +100,36 @@ export default function DonorRegister() {
     setSuccess(false);
 
     try {
-      // Save the donor data first
-      const response = await baseApi.post(
-        "/donorRegister",
-        {
-          donorname,
-          dob,
-          bloodtype,
-        }
-      );
+      const response = await baseApi.post("/donorRegister", {
+        donorname,
+        dob,
+        bloodtype,
+        hospitalDonated:HospitalName
+      });
 
       console.log("New donor data saved:", response);
-      console.log("id",response.data.data._id)
+      console.log("id", response.data.data._id);
 
       // If donor data is successfully saved, upload the picture
       if (picture) {
         const uploadedImageUrl = await uploadImage(picture);
         console.log("Image uploaded successfully:", uploadedImageUrl);
 
-    
+        const verifyResponse = await baseApi.put("/donorRegister/image", {
+          donorId: response.data.data._id,
+          picture: imageUrl,
+          descriptors: descriptors,
+        });
 
-        // Update donor record with uploaded image URL                       
-       const verifyResponse = await baseApi.put(
-          "/donorRegister/image", // Assuming `donorId` is returned in response
-          {
-            donorId:response.data.data._id,
-             picture: imageUrl,
-             descriptors:descriptors
-            }
-        );
-        console.log("response",verifyResponse.data.message)
-        if(verifyResponse?.data?.verifyMessage){
-          setSuccess(false)
-          setError(`${verifyResponse?.data?.verifyMessage}`)
-          return
+        console.log("response", verifyResponse.data.message);
+        if (verifyResponse?.data?.verifyMessage) {
+          setSuccess(false);
+          setError(`${verifyResponse?.data?.verifyMessage}`);
+          return;
         }
-        
-      setSuccess(true);
-       
+
+        setSuccess(true);
       }
-       
     } catch (error) {
       console.error("Error saving donor data:", error);
       setError("Failed to save donor data. Please try again.");
@@ -145,140 +139,126 @@ export default function DonorRegister() {
   };
 
   return (
-    <>
-    
-    
-  
-    <ProcessImage imageUrl={imageUrl} setDescriptors={setDescriptors}/>
-    <div className="flex justify-center items-center h-[100%] bg-[#181a1b] w-[100%] md:py-[1rem] py-[.3rem]">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-3xl p-6 bg-white rounded-lg shadow-md">
+        <ProcessImage imageUrl={imageUrl} setDescriptors={setDescriptors} />
 
-
-
-    <div className="flex  flex-col flex-wrap gap-[1rem]">
-      {/* Statistics Section */}
-      <div className="flex justify-center flex-wrap gap-[1rem]">
-        {stats.map((section, index) => (
-          <div key={index}>
-            <div className="flex justify-between border-[1px] border-[#3d3434] h-[100px] w-fit md:w-[200px] rounded-[10px] bg-[#fff] gap-[1rem] p-[1rem]">
-              <div className="flex flex-col items-start justify-center">
-                <h4 className="text-[20px] font-mono">{section.number}</h4>
-                <h4 className="text-[20px] font-mono">{section.name}</h4>
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          {stats.map((section, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center border px-4 py-6 rounded-lg shadow-sm bg-gray-50"
+            >
+              <div className="text-left">
+                <h4 className="text-xl font-semibold">{section.number}</h4>
+                <p className="text-sm text-gray-600">{section.name}</p>
               </div>
               <div
                 className={`${
-                  index === 1 ? "bg-[red]" : "bg-[blue]"
-                } rounded-[10px] text-[20px] w-[100%] flex items-center justify-center md:text-[32px] text-[#fff]`}
+                  index === 1 ? "bg-red-500" : "bg-blue-500"
+                } p-4 rounded-full text-white text-2xl`}
               >
                 {section.icon}
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Donor Registration Form */}
-      <div className="flex flex-col w-[100%] bg-[#eee] rounded-[10px]">
-        <div className="flex justify-between w-[100%] bg-[red] px-[2rem] items-center">
-          <p className="text-[#fff] md:text-[28px]">Donor Registration</p>
-          <img
-            src="/docImg.jpg"
-            className="object-cover h-[50px] w-[50px] rounded-[10px]"
-            alt="Donor"
-          />
+          ))}
         </div>
 
-        <div className="flex flex-col w-[100%] p-[2rem]">
-          <div className="flex flex-col pb-[.5rem]">
-            <h4 className="text-[18px] font-mono">Hospital Section</h4>
-            <hr className="border-[1px] border-[red] w-[100%]" />
-            <label className="mt-[.5rem]">
-              <h4>Hospital Name</h4>
-              <input
-                type="text"
-                placeholder="Enter hospital name"
-                className="border-[1px] rounded-[10px] border-[#000] p-[.3rem] w-[80%]"
-                onChange={(e) => setHospitalName(e.target.value)}
-              />
+        {/* Donor Registration Form */}
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          Donor Registration
+        </h2>
+
+        <form className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Hospital Name
             </label>
+            <input
+              type="text"
+              placeholder="Enter hospital name"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(e) => setHospitalName(e.target.value)}
+            />
           </div>
 
-          <div className="flex flex-col pt-[1rem]">
-            <h4 className="text-[18px] font-mono">Donor Section</h4>
-            <hr className="border-[1px] border-[red] w-[100%]" />
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Donor Name
+            </label>
+            <input
+              type="text"
+              placeholder="Enter donor name"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(e) => setDonorName(e.target.value)}
+            />
           </div>
 
-          <div className="flex flex-col gap-[.5rem] py-[.5rem]">
-            <label>
-              <h4>Donor Name</h4>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Date of Birth
+            </label>
+            <input
+              type="date"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(e) => setDob(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Blood Type
+            </label>
+            <select
+              className="mt-1 block w-1/3 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(e) => setBloodType(e.target.value)}
+            >
+              <option>-</option>
+              <option>AB-</option>
+              <option>AB+</option>
+              <option>A+</option>
+              <option>A-</option>
+              <option>B+</option>
+              <option>B-</option>
+              <option>O-</option>
+              <option>O+</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Upload Picture
+            </label>
+            <div className="mt-2 flex items-center space-x-4">
               <input
-                type="text"
-                placeholder="Enter donor name"
-                className="border-[1px] rounded-[5px] p-[.3rem] w-[80%]"
-                onChange={(e) => setDonorName(e.target.value)}
+                type="file"
+                accept="image/*"
+                className="p-2 border border-gray-300 rounded-md shadow-sm w-full"
+                onChange={handleChangePic}
               />
-            </label>
-
-            <label>
-              <h4>Date of Birth</h4>
-              <input
-                type="date"
-                className="border-[1px] rounded-[5px] p-[.3rem] w-[80%]"
-                onChange={(e) => setDob(e.target.value)}
-              />
-            </label>
-
-            <label>
-              <h4>Blood Type</h4>
-              <select
-                className="w-[100px] border-[1px] rounded-[5px] p-[.3rem]"
-                onChange={(e) => setBloodType(e.target.value)}
-              >
-                <option>-</option>
-                <option>AB-</option>
-                <option>AB+</option>
-                <option>A+</option>
-                <option>A-</option>
-                <option>B+</option>
-                <option>B-</option>
-                <option>O-</option>
-                <option>O+</option>
-              </select>
-            </label>
-
-            <label>
-              <h4>Upload Picture</h4>
-              <div className="flex gap-[2rem] items-center">
-                <button className="border-[1px] md:hover:bg-[green] border-[red] rounded-[5px] px-[.3rem]">
-                  Take Photo
-                </button>
-                <p>OR</p>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="border-[1px] rounded-[5px] p-[.3rem] w-[80%]"
-                  onChange={handleChangePic}
-                />
-              </div>
-            </label>
-
-            <div className="mt-[.5rem] flex justify-center flex-col gap-[.5rem] items-center">
-              <button
-                className="bg-[green] md:hover:bg-[red] text-[#fff] font-mono w-fit px-[1rem] py-[.5rem] rounded-[10px]"
-                onClick={handleSaveRecord}
-                disabled={loading}
-              >
-                {loading ? "Saving..." : "Register Donor"}
-              </button>
-
-              {error && <p className="text-[red] mt-[.5rem]">{error}</p>}
-              {success && <p className="text-[green] mt-[.5rem]">Face Verified And Registered Successfully!</p>}
             </div>
           </div>
-        </div>
+
+          <div className="flex justify-center">
+            <button
+              type="button"
+              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md shadow-lg"
+              onClick={handleSaveRecord}
+              disabled={loading}
+            >
+              {loading ? "Saving..." : "Register Donor"}
+            </button>
+          </div>
+
+          {error && <p className="text-red-500 text-center">{error}</p>}
+          {success && (
+            <p className="text-green-500 text-center">
+              Donor registered successfully!
+            </p>
+          )}
+        </form>
       </div>
     </div>
-    </div>
-
-    </>
   );
 }

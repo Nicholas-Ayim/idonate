@@ -25,6 +25,18 @@ const DonorSchema = new mongoose.Schema({
   },
   descriptors: {
     type: [Number],  // Array of arrays of numbers for facial descriptors
+  },
+  donate:{
+    type:Boolean,
+    default: true
+  },
+  NumberOfDonations:{
+    type:Number,
+    default:1
+  },
+  hospitalDonated:{
+    type:String,
+    defaut:""
   }
 }, {
   timestamps: true
@@ -34,3 +46,4 @@ const DonorSchema = new mongoose.Schema({
 const Donor = mongoose.model('Donor', DonorSchema);
 
 module.exports = Donor;
+  

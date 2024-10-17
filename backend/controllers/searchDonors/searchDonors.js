@@ -2,21 +2,21 @@ const Donor = require("../../models/donorModels/donorModel")
 
 const SearchDonor = async (req, res) => {
     try {
-        const { name = "", bloodType = "" } = req.query;
+        const { donorname = "", bloodtype = "" } = req.query;
 
         const pipeLine = [
             {
                 $project: {
-                    name: 1,
-                    Dob:1,
+                    donorname: 1,
+                    dob:1,
                     bloodtype: 1,
                     picture:1
                 }
             },
             {
                 $match: {
-                    name: { $regex: name, $options: "i" },
-                    bloodtype: { $regex: blood, $options: "i" }
+                    donorname: { $regex: donorname, $options: "i" },
+                    bloodtype: { $regex: bloodtype, $options: "i" }
                 }
             }
         ];

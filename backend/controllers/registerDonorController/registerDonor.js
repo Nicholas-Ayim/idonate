@@ -4,16 +4,17 @@ require("dotenv").config();
 
 
 const DonorSignupdb = async (req, res) => {
-  const { donorname, dob, bloodtype} = req.body
-
+  const { donorname, dob, bloodtype,hospitalDonated} = req.body
+ 
   try {
    
-    console.log("body",donorname,dob,bloodtype)
+    console.log("body",donorname,dob,bloodtype,hospitalDonated)
     //save into our database
     const dbResponse = await Donor.create({
       donorname,
       dob,
       bloodtype,
+      hospitalDonated
       // descriptors,
       // picture
 
@@ -30,6 +31,6 @@ const DonorSignupdb = async (req, res) => {
       return res.status(500).json({ message: "Internal server error", error: err.message });
     }
   }
-};
+};  
 
 module.exports = DonorSignupdb;
